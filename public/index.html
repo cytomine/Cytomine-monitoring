@@ -1,0 +1,101 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>Cyto-Monitoring</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:50px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+	</style>
+
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+	<script src="core.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS WITH INITIALIZE FUNCTION -->
+<body ng-controller="mainController">
+
+    <div class="container">
+
+        <!-- HEADER AND TODO COUNT -->
+        <div class="jumbotron text-center">
+            <h1>Cytomine Server Monitoring <span class="label label-info">{{ servers.length }}</span></h1>
+        </div>
+
+        <!-- Server LIST -->
+        <div id="server-list" class="row">
+
+            <!--status:"OK",-->
+            <!--lastUpdateStatus: new Date(),-->
+            <!--version: json.version,-->
+            <!--lastSuccessStatus: new Date(),-->
+            <!--downNumber : 0,-->
+            <!--ping :end - start-->
+
+
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Url</th>
+                            <th>Status</th>
+                            <th>Version</th>
+                            <th>Last check</th>
+                            <th>Last Success</th>
+                            <th>Ping</th>
+                            <th>Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="server in servers">
+                            <tr>
+                                <td>{{ server.url }}</td>
+                                <td><span class="label" ng-class="getStatusClass(server.status)">{{ server.status }}</span></td>
+                                <td>{{ server.version }}</td>
+                                <td>{{ server.lastUpdateStatus | dateToFuzzyTime }}<br/>({{ server.lastUpdateStatus |date:"dd/MM/yyyy hh:mm:ss"}})</td>
+                                <td>{{ server.lastSuccessStatus | dateToFuzzyTime }}<br/>({{ server.lastSuccessStatus |date:"dd/MM/yyyy hh:mm:ss"}})</td>
+                                <td>{{ server.ping }}ms</td>
+                                <td><button type="button" class="btn" ng-click="deleteServer(server._id)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+        </div>
+
+        <!-- FORM TO CREATE SERVERS -->
+        <div id="server-form" class="row">
+            <div class="col-sm-8 col-sm-offset-2 text-center">
+                <form>
+                    <div class="form-group">
+
+                        <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                        <input type="text" class="form-control input-lg text-center" placeholder="Enter the server Host" ng-model="formDataServer.url">
+                        <input type="text" class="form-control input-lg text-center" placeholder="Enter a public key from this host" ng-model="formDataServer.publicKey">
+                        <input type="text" class="form-control input-lg text-center" placeholder="Enter a private key from this host" ng-model="formDataServer.privateKey">
+                    </div>
+
+                    <!-- createServer() WILL CREATE NEW SERVERS -->
+                    <button type="submit" class="btn btn-primary btn-lg" ng-click="createServer()">Add</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+</body>
+</html>
