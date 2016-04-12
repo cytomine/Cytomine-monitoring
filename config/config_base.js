@@ -4,8 +4,10 @@ module.exports = {
 	smtpService : "Gmail",
 	smtpFrom: "xxxx@xxx.xxx",
 	smtpPassword: "xxxxxx",
-	cytominePublicKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-	cytominePrivateKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 	interval: 30000,
-	port: 8000
+	port: 8000,
+	servers :
+	[
+		//{host:"XXX", publicKey:"XXX",privateKey:"XXX"}
+	]
 }

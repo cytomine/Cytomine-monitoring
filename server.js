@@ -49,13 +49,25 @@ app.configure(function() {
 // routes ======================================================================
 require('./app/routes.js')(app);
 
+var Server = require('./app/models/server');
+
+var servers = config.servers;
+
+for(var i = 0 ;i<servers.length;i++){
+    Server.create({
+        url : servers[i].host,
+        publicKey : servers[i].publicKey,
+        privateKey : servers[i].privateKey
+    }, function(err, todo) {});
+}
+
+
 // listen (start app with node server.js) ======================================
 app.listen(port);
 console.log("App listening on port " + port);
 
 var monitoringInterval = config.interval;
 
-var Server = require('./app/models/server');
 
 
 
@@ -131,7 +143,7 @@ var checkServer = function(server) {
     console.log("Request to " +  serverUrl.hostname + ":"+serverUrl.port + " [last:"+server.lastUpdateStatus+"]");
     console.log("DownNumber = " +server.downNumber);
 
-    var headers = authorize(config.cytominePublicKey,config.cytominePrivateKey,"GET", "/server/ping.json", "", "application/json,*/*");
+    var headers = authorize(server.publicKey,server.privateKey,"GET", "/server/ping.json", "", "application/json,*/*");
 
     //The url we want is `www.nodejitsu.com:1337/`
     var options = {
